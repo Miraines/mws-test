@@ -1,0 +1,153 @@
+﻿openapi: "3.0.3"
+info:
+  title: "Cats API"
+  version: "1.0.0"
+  description: "API for managing cats"
+servers:
+  - url: "http://localhost:8000"
+    description: "Local server"
+paths:
+  /cats:
+    get:
+      operationId: "listCats"
+      summary: "List cats"
+      description: "Returns the full list of cats stored in the service's memory"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Cat"
+
+    post:
+      operationId: "createCat"
+      summary: "Create a new cat"
+      description: "Creates a new cat and returns its complete representation."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewCat"
+      responses:
+        "201":
+          description: "Created"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cat"
+
+  /cats/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: "ID of the cat to retrieve"
+        schema:
+          type: integer
+          format: int64
+
+    get:
+      operationId: "getCat"
+      summary: "Get a cat"
+      description: "Finds a cat by ID and returns it."
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cat"
+        404:
+          description: "Cat not found"
+
+    put:
+      operationId: "updateCat"
+      summary: "Update a cat"
+      description: "Updates the data of the cat by ID and returns the updated record."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateCat"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cat"
+        404:
+          description: "Cat not found"
+
+    delete:
+      operationId: "deleteCat"
+      summary: "Delete a cat"
+      description: "Deletes a cat by ID. Returns `204 No Content' if deletion was successful."
+      responses:
+        204:
+          description: "No Content"
+        404:
+          description: "Cat not found"
+
+components:
+  schemas:
+    Cat:
+      type: "object"
+      required: [ id, name, age, color ]
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+          description: "The unique identifier of the cat"
+        name:
+          type: "string"
+          example: "Barsik"
+        age:
+          type: "integer"
+          format: "int32"
+          minimum: 0
+          maximum: 20
+          example: 3
+          description: "The age of the cat"
+        color:
+          type: "string"
+          example: "black"
+          description: "The color of the cat"
+
+    NewCat:
+      type: "object"
+      required: [ name, age, color ]
+      properties:
+        name:
+          type: "string"
+        age:
+          type: "integer"
+          format: "int32"
+          minimum: 0
+          maximum: 20
+        color:
+          type: "string"
+      description: "Parameters for creating a new cat"
+
+    UpdateCat:
+      type: "object"
+      required: [ name, age, color ]
+      properties:
+        name:
+          type: "string"
+        age:
+          type: "integer"
+          format: "int32"
+          minimum: 0
+          maximum: 20
+        color:
+          type: "string"
+      description: "Complete replacement (PUT) of an existing cat"
+
+
+
