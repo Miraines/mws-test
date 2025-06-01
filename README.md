@@ -73,12 +73,12 @@
 ```mermaid
 graph TD
     subgraph Client Side
-        CLI["CLI пример\n(api.NewClient)"]
+        CLI["CLI пример<br>(api.NewClient)"]
     end
 
     subgraph Server Side
-        HTTPServer["Сгенерированный HTTP-сервер"]
-        Service["CatService\n(бизнес-логика)"]
+        HTTPServer["Сгенерированный<br>HTTP-сервер"]
+        Service["CatService<br>(бизнес-логика)"]
         Store["MemoryStore"]
     end
 
